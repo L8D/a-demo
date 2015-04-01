@@ -6,6 +6,10 @@ module.exports = function(options) {
   var value = options.value;
   var label = options.label || String(options.value);
 
+  var font = options.font || function(size) {
+    return 'bold ' + size + 'px Arial';
+  };
+
   var min = options.min == null ? 0 : options.min;
   var max = options.max == null ? 100 : options.max;
 
@@ -102,7 +106,7 @@ module.exports = function(options) {
       'vertical-align' : 'middle',
       border: 0,
       background : 'none',
-      font: 'bold ' + ((realWidth / fontScale) >> 0) + 'px Arial',
+      font: font((realWidth / fontScale) >> 0),
       'text-align' : 'center',
       color: fontColor,
       padding: 0,
