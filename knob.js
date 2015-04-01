@@ -85,21 +85,28 @@ module.exports = function(options) {
   function draw(value) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    var angle = (value - min) * angleArc / (max - min);
-
     var radius = center - lineWidth / 2;
 
     var startAngle = 1.5 * Math.PI + angleOffset;
     var endAngle = 1.5 * Math.PI + angleOffset + angleArc;
 
-    ctx.beginPath();
-    ctx.strokeStyle = bgColor;
-    ctx.arc(center, center, radius, endAngle, startAngle, true);
-    ctx.stroke();
+    if (value === max) {
+      ctx.beginPath();
+      ctx.strokeStyle = fgColor;
+      ctx.arc(center, center, radius, 1.5 * Math.PI, 1.5 * Math.PI);
+      ctx.stroke()
+    } else {
+      var angle = (value - min) * angleArc / (max - min);
 
-    ctx.beginPath();
-    ctx.strokeStyle = fgColor;
-    ctx.arc(center, center, radius, startAngle, startAngle + angle, false);
-    ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = bgColor;
+      ctx.arc(center, center, radius, endAngle, startAngle, true);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.strokeStyle = fgColor;
+      ctx.arc(center, center, radius, startAngle, startAngle + angle, false);
+      ctx.stroke();
+    }
   }
 };
