@@ -35,11 +35,11 @@ module.exports = function(options) {
 
   var lineWidth = center * thickness;
 
-  var canvas = $('<canvas>', {
-    height: height,
-    width: width
-  });
+  var canvas = $('<canvas>');
 
+  // TIL
+  canvas.attr('width', width);
+  canvas.attr('height', height);
   canvas.css({position: 'absolute'});
 
   var ctx = canvas.get(0).getContext('2d');
