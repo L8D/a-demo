@@ -18,6 +18,7 @@ module.exports = function(options) {
 
   var bgColor = options.bgColor || '#EEEEEE';
   var fgColor = options.fgColor || '#87CEEB';
+  var fontColor = options.fontColor || '#87CEEB';
 
   var angleOffset = options.angleOffset == null ? 0 : options.angleOffset;
   var angleArc = options.angleArc == null ? 360 : options.angleArc;
@@ -103,7 +104,7 @@ module.exports = function(options) {
       background : 'none',
       font: 'bold ' + ((realWidth / fontScale) >> 0) + 'px Arial',
       'text-align' : 'center',
-      color: fgColor,
+      color: fontColor,
       padding: 0,
       '-webkit-appearance': 'none'
     });
