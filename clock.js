@@ -17,19 +17,26 @@
  * shared instance of this object at a time.
  * @param {number} tickInterval - tick interval in miliseconds (used by `tick`)
  * @param {number} realInterval - tick interval in miliseconds (used by `setInterval`)
- * @property {number} interval - tick interval in miliseconds
+ * @param {number} totalTicks - tick count to stop at
  * @property {number} timeoutId - timeoutId from the last `setInterval` call
  * @property {number} lastTick - timestamp of the last `tick` call
- * @property {clockListener[]} listeners - array of listener callbacks
+ * @property {number} elapsedTime - elapsed time in miliseconds since start
+ * @property {number} elapsedTicks - number of elapsed ticks
+ * @property {clockListener[]} tickListeners - array of listener callbacks
+ * @property {clockListener[]} updateListeners - array of listener callbacks
  * @class
  */
-var Clock = module.exports = function(tickInterval, realInterval) {
+var Clock = module.exports = function(tickInterval, realInterval, totalTicks) {
   this.tickInterval = tickInterval;
   this.realInterval = realInterval;
+  this.totalTicks = totalTicks == null ? Infinity : totalTicks;
   this.timeoutId = null;
   this.lastTick = null;
   this.elapsedTime = null;
-  this.listeners = [];
+  this.elapsedTicks = 0;
+  this.extra = 0;
+  this.tickListeners = [];
+  this.updateListeners = [];
 };
 
 Clock.prototype = {
@@ -57,26 +64,40 @@ Clock.prototype = {
   tick: function() {
     var now = Date.now();
     var then = this.lastTick;
+    var total = this.totalTicks;
+    var count = this.elapsedTicks;
     var interval = this.tickInterval;
+    var extra = this.extra;
 
-    var elapsed = now - then;
-    var extra = elapsed % interval;
+    var elapsed = extra + (now - then);
+    extra = elapsed % interval;
     var ticks = Math.floor(elapsed / interval);
 
-    for (var i = 0; i < ticks; i++) {
-      this.emit();
+    this.lastTick = now;
+    this.elapsedTime += now - then;
+    this.extra = extra;
+    this.elapsedTicks += ticks;
+
+    if (ticks + count >= total) {
+      ticks = total - count;
     }
 
-    // To be fixed if any code depends on a precide lastTick value
-    this.lastTick = now - extra;
-    this.elapsedTime += elapsed;
+    for (var i = 0; i < ticks; i++) {
+      this.emitTick();
+    }
+
+    this.emitUpdate();
+
+    if (ticks + count >= total) {
+      this.stop();
+    }
   },
 
   /**
-   * Calls each listener callback.
+   * Calls each tick listener callback.
    */
-  emit: function() {
-    var listeners = this.listeners;
+  emitTick: function() {
+    var listeners = this.tickListeners;
 
     for (var i = 0; i < listeners.length; i++) {
       listeners[i](this);
@@ -86,20 +107,55 @@ Clock.prototype = {
   /**
    * Adds a listener to be called for each tick.
    */
-  subscribe: function(listener) {
-    this.listeners.push(listener);
+  onTick: function(listener) {
+    this.tickListeners.push(listener);
   },
 
   /**
-   * Removes a previously-added listener.
+   * Removes a previously-added tick listener.
    */
-  unsubscribe: function(listener) {
-    var listeners = this.listeners;
+  offTick: function(listener) {
+    var listeners = this.tickListeners;
 
     var index = listeners.indexOf(listener);
 
     if (index !== -1) {
       listeners.splice(index, 1);
     }
+  },
+
+  /**
+   * Calls each tick listener callback.
+   */
+  emitUpdate: function() {
+    var listeners = this.updateListeners;
+
+    for (var i = 0; i < listeners.length; i++) {
+      listeners[i](this);
+    }
+  },
+
+  /**
+   * Adds a listener to be called for each update.
+   */
+  onUpdate: function(listener) {
+    this.updateListeners.push(listener);
+  },
+
+  /**
+   * Removes a previously-added update listener.
+   */
+  offUpdate: function(listener) {
+    var listeners = this.updateListeners;
+
+    var index = listeners.indexOf(listener);
+
+    if (index !== -1) {
+      listeners.splice(index, 1);
+    }
+  },
+
+  stop: function() {
+    clearInterval(this.timeoutId);
   }
 };
