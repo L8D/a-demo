@@ -30,7 +30,7 @@ function start(time) {
 
   clock.onUpdate(function() {
     knob.label(format(time * 1000 - clock.elapsedTime + 1000));
-    knob.draw(-clock.elapsedTime);
+    knob.draw(clock.elapsedTime);
   });
 
   clock.start();
