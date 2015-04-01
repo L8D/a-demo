@@ -35,42 +35,9 @@ module.exports = function(options) {
 
   var lineWidth = center * thickness;
 
-  var canvas = $('<canvas>');
-
-  // TIL
-  canvas.attr('width', width);
-  canvas.attr('height', height);
-  canvas.css({position: 'absolute'});
-
-  var ctx = canvas.get(0).getContext('2d');
-
-  ctx.lineWidth = lineWidth;
-  ctx.lineCap = lineCap;
-
-  var input = $('<input>', {value: label});
-
-  input.css({
-    position: 'absolute',
-    top: center - (width / 7),
-    left: lineWidth,
-    width: width - (lineWidth * 2),
-    'vertical-align' : 'middle',
-    border: 0,
-    background : 'none',
-    font: 'bold ' + ((width / fontScale) >> 0) + 'px Arial',
-    'text-align' : 'center',
-    color: fgColor,
-    padding: 0,
-    '-webkit-appearance': 'none'
-  });
-
-  var element = $('<div>');
-  element.css({
-    display: 'inline-block',
-    position: 'relative',
-    height: options.height,
-    width: options.width
-  });
+  var canvas = makeCanvas();
+  var input = makeInput();
+  var element = makeDiv();
 
   element.append(canvas, input);
 
@@ -101,5 +68,55 @@ module.exports = function(options) {
     ctx.strokeStyle = fgColor;
     ctx.arc(center, center, radius, startAngle, startAngle + angle, false);
     ctx.stroke();
+  }
+
+  function makeCanvas() {
+    var canvas = $('<canvas>');
+
+    // TIL
+    canvas.attr('width', width);
+    canvas.attr('height', height);
+    canvas.css({position: 'absolute'});
+
+    var ctx = canvas.get(0).getContext('2d');
+
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = lineCap;
+
+    return cavnas;
+  }
+
+  function makeInput() {
+    var input = $('<input>', {value: label});
+
+    input.css({
+      position: 'absolute',
+      top: center - (width / 7),
+      left: lineWidth,
+      width: width - (lineWidth * 2),
+      'vertical-align' : 'middle',
+      border: 0,
+      background : 'none',
+      font: 'bold ' + ((width / fontScale) >> 0) + 'px Arial',
+      'text-align' : 'center',
+      color: fgColor,
+      padding: 0,
+      '-webkit-appearance': 'none'
+    });
+
+    return input;
+  }
+
+  function makeDiv() {
+    var element = $('<div>');
+
+    element.css({
+      display: 'inline-block',
+      position: 'relative',
+      height: height,
+      width: width
+    });
+
+    return element;
   }
 };
