@@ -12,8 +12,8 @@ module.exports = function(options) {
   var thickness = options.thickness || 0.35;
   var lineCap = options.lineCap || 'butt';
 
-  var width = options.width || 200;
-  var height = options.height || width;
+  var realWidth = options.width || 200;
+  var width = realWidth * 4;
   var center = width / 2;
 
   var bgColor = options.bgColor || '#EEEEEE';
@@ -75,8 +75,8 @@ module.exports = function(options) {
 
     // TIL
     canvas.attr('width', width);
-    canvas.attr('height', height);
-    canvas.css({position: 'absolute'});
+    canvas.attr('height', width);
+    canvas.css({position: 'absolute', width: realWidth, height: realWidth});
 
     return canvas;
   }
@@ -95,13 +95,13 @@ module.exports = function(options) {
 
     input.css({
       position: 'absolute',
-      top: center - (width / 7),
-      left: lineWidth,
-      width: width - (lineWidth * 2),
+      top: (realWidth / 2) - (realWidth / 10),
+      left: (realWidth / 2) * thickness,
+      width: realWidth - (realWidth * thickness),
       'vertical-align' : 'middle',
       border: 0,
       background : 'none',
-      font: 'bold ' + ((width / fontScale) >> 0) + 'px Arial',
+      font: 'bold ' + ((realWidth / fontScale) >> 0) + 'px Arial',
       'text-align' : 'center',
       color: fgColor,
       padding: 0,
@@ -117,8 +117,8 @@ module.exports = function(options) {
     element.css({
       display: 'inline-block',
       position: 'relative',
-      height: height,
-      width: width
+      height: realWidth,
+      width: realWidth
     });
 
     return element;
