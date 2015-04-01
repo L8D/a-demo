@@ -36,6 +36,7 @@ module.exports = function(options) {
   var lineWidth = center * thickness;
 
   var canvas = makeCanvas();
+  var ctx = makeContext(canvas);
   var input = makeInput();
   var element = makeDiv();
 
@@ -78,12 +79,16 @@ module.exports = function(options) {
     canvas.attr('height', height);
     canvas.css({position: 'absolute'});
 
+    return canvas;
+  }
+
+  function makeContext(canvas) {
     var ctx = canvas.get(0).getContext('2d');
 
     ctx.lineWidth = lineWidth;
     ctx.lineCap = lineCap;
 
-    return cavnas;
+    return ctx;
   }
 
   function makeInput() {
