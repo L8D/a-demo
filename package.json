@@ -1,0 +1,13 @@
+{
+  "name": "some-package-name-no-one-will-ever-read",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "bundle": "browserify main.js -o bundle.js"
+  },
+  "dependencies": {
+    "browserify": "^9.0.4",
+    "dateformat": "^1.0.11",
+    "jquery": "^2.1.3"
+  }
+}
