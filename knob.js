@@ -8,7 +8,6 @@ module.exports = function(options) {
 
   var min = options.min == null ? 0 : options.min;
   var max = options.max == null ? 100 : options.max;
-  var step = options.step == null ? 1 : options.step;
 
   var thickness = options.thickness || 0.35;
   var lineCap = options.lineCap || 'butt';
