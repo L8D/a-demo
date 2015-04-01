@@ -20,10 +20,12 @@ function start(time) {
   clock = new Clock(1000, 10, time);
 
   var knob = Knob({
+    width: 150,
     min: 0,
     value: 0,
     label: format(0),
-    max: time * 1000
+    max: time * 1000,
+    thickness: 0.2
   });
 
   $('#box').html(knob.element);
