@@ -25,7 +25,9 @@ function start(time) {
     value: 0,
     label: format(0),
     max: time * 1000,
-    thickness: 0.2
+    thickness: 0.2,
+    fgColor: '#eee',
+    bgColor: '#87ceeb'
   });
 
   $('#box').html(knob.element);
