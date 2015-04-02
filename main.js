@@ -12,22 +12,22 @@ $('#time-form').submit(function(e) {
 
   var seconds = +$('#time-val').val();
 
-  start(seconds);
+  start(seconds * 1000);
 });
 
 function start(time) {
   clock.stop();
-  clock = new Clock(1000, 10, time);
+  clock = new Clock(1000, 10, time / 1000);
 
   var knob = Knob({
     width: 150,
     min: 0,
     value: 0,
     label: format(0),
-    max: time * 1000,
+    max: time,
     fgThickness: 0.05,
     bgThickness: 0.2,
-    fgColor: '#00A651',
+    fgColor: '#77A78D',
     bgColor: '#EDEDED',
     fontColor: '#4D4E5E',
   });
@@ -35,8 +35,15 @@ function start(time) {
   $('#box').html(knob.element);
 
   clock.onUpdate(function() {
-    knob.label(format(time * 1000 - clock.elapsedTime + 1000));
-    knob.draw(clock.elapsedTime);
+    var elapsed = clock.elapsedTime;
+
+    knob.label(format(time - elapsed + 990));
+
+    if (elapsed >= time) {
+      knob.draw(0);
+    } else {
+      knob.draw(elapsed - time);
+    }
   });
 
   clock.start();
