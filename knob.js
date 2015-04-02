@@ -13,7 +13,9 @@ module.exports = function(options) {
   var min = options.min == null ? 0 : options.min;
   var max = options.max == null ? 100 : options.max;
 
-  var thickness = options.thickness || 0.35;
+  var fgThickness = options.fgThickness || 0.35;
+  var bgThickness = options.bgThickness || fgThickness;
+
   var lineCap = options.lineCap || 'butt';
 
   var realWidth = options.width || 200;
@@ -22,7 +24,7 @@ module.exports = function(options) {
 
   var bgColor = options.bgColor || '#EEEEEE';
   var fgColor = options.fgColor || '#87CEEB';
-  var fontColor = options.fontColor || '#87CEEB';
+  var fontColor = options.fontColor || fgColor;
 
   var angleOffset = options.angleOffset == null ? 0 : options.angleOffset;
   var angleArc = options.angleArc == null ? 360 : options.angleArc;
@@ -37,7 +39,8 @@ module.exports = function(options) {
     2
   ) + 2;
 
-  var lineWidth = center * thickness;
+  var fgLineWidth = center * fgThickness;
+  var bgLineWidth = center * bgThickness;
 
   var canvas = makeCanvas();
   var ctx = makeContext(canvas);
@@ -59,18 +62,20 @@ module.exports = function(options) {
 
     var angle = (value - min) * angleArc / (max - min);
 
-    var radius = center - lineWidth / 2;
+    var radius = center - bgLineWidth / 2;
 
     var startAngle = 1.5 * Math.PI + angleOffset;
     var endAngle = 1.5 * Math.PI + angleOffset + angleArc;
 
     ctx.beginPath();
     ctx.strokeStyle = bgColor;
+    ctx.lineWidth = bgLineWidth;
     ctx.arc(center, center, radius, endAngle, startAngle, true);
     ctx.stroke();
 
     ctx.beginPath();
     ctx.strokeStyle = fgColor;
+    ctx.lineWidth = fgLineWidth;
     ctx.arc(center, center, radius, startAngle, startAngle + angle, false);
     ctx.stroke();
   }
@@ -89,7 +94,6 @@ module.exports = function(options) {
   function makeContext(canvas) {
     var ctx = canvas.get(0).getContext('2d');
 
-    ctx.lineWidth = lineWidth;
     ctx.lineCap = lineCap;
 
     return ctx;
@@ -101,8 +105,8 @@ module.exports = function(options) {
     input.css({
       position: 'absolute',
       top: (realWidth / 2) - (realWidth / 10),
-      left: (realWidth / 2) * thickness,
-      width: realWidth - (realWidth * thickness),
+      left: (realWidth / 2) * bgThickness,
+      width: realWidth - (realWidth * bgThickness),
       'vertical-align' : 'middle',
       border: 0,
       background : 'none',
