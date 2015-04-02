@@ -20,13 +20,13 @@ function start(time) {
   clock = new Clock(1000, 10, time / 1000);
 
   var knob = Knob({
-    width: 150,
+    width: 200,
     min: 0,
     value: 0,
     label: format(0),
     max: time,
-    fgThickness: 0.05,
-    bgThickness: 0.2,
+    fgThickness: 0.03,
+    bgThickness: 0.24,
     fgColor: '#77A78D',
     bgColor: '#EDEDED',
     fontColor: '#4D4E5E',
