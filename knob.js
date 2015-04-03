@@ -100,7 +100,7 @@ module.exports = function(options) {
 
     input.css({
       position: 'absolute',
-      top: (realWidth / 2) - (realWidth / 10),
+      top: (realWidth / 2) - (realWidth / 7),
       left: (realWidth / 2) * bgThickness,
       width: realWidth - (realWidth * bgThickness),
       'vertical-align': 'middle',
