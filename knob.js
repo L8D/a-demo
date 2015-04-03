@@ -29,7 +29,7 @@ module.exports = function(options) {
   var angleOffset = options.angleOffset == null ? 0 : options.angleOffset;
   var angleArc = options.angleArc == null ? 360 : options.angleArc;
 
-  // deg to rad
+  // Deg to rad
   angleOffset = angleOffset * Math.PI / 180;
   angleArc = angleArc * Math.PI / 180;
 
@@ -107,11 +107,11 @@ module.exports = function(options) {
       top: (realWidth / 2) - (realWidth / 10),
       left: (realWidth / 2) * bgThickness,
       width: realWidth - (realWidth * bgThickness),
-      'vertical-align' : 'middle',
+      'vertical-align': 'middle',
       border: 0,
-      background : 'none',
+      background: 'none',
       font: font((realWidth / fontScale) >> 0),
-      'text-align' : 'center',
+      'text-align': 'center',
       color: fontColor,
       padding: 0,
       '-webkit-appearance': 'none'
