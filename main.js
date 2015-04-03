@@ -27,20 +27,26 @@ $('#start').click(function(e) {
   }
 });
 
-$('#stop').click(function() {
+$('#stop').click(stop);
+
+function stop() {
   if (clock.isRunning()) {
     clock.stop();
     $('#stop').html('Reset');
     $('#start').html('Resume');
   } else {
-    clock.reset();
-    $('#start').html('Start');
-    $('#stop').html('Stop');
-    $('#stop').addClass('pure-button-disabled');
-    $('#stop').prop('disabled', true);
-    makeKnob(0);
+    reset();
   }
-});
+};
+
+function reset() {
+  clock.reset();
+  $('#start').html('Start');
+  $('#stop').html('Stop');
+  $('#stop').addClass('pure-button-disabled');
+  $('#stop').prop('disabled', true);
+  makeKnob(0);
+}
 
 function go(e) {
   if ($('#seconds').val().trim() === '') {
@@ -63,11 +69,10 @@ function start(time) {
   clock.onUpdate(function() {
     var elapsed = clock.elapsedTime;
 
-    knob.label(format(time - elapsed + 990));
+    knob.label(format(time - elapsed + 1000));
 
     if (elapsed >= time) {
-      knob.draw(0);
-      clock.stop();
+      reset();
     } else {
       knob.draw(elapsed - time);
     }
