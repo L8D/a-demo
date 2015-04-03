@@ -17,7 +17,7 @@ $('#time-form').submit(function(e) {
 
 function start(time) {
   clock.stop();
-  clock = new Clock(1000, 10, time / 1000);
+  clock = new Clock(10);
 
   var knob = Knob({
     width: 200,
