@@ -43,7 +43,9 @@ $('#stop').click(function() {
 });
 
 function go(e) {
-  if ($('#seconds').val().trim() === '') return;
+  if ($('#seconds').val().trim() === '') {
+    return;
+  }
 
   e.preventDefault();
 
