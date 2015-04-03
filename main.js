@@ -9,21 +9,15 @@ var clock = new Clock(null);
 
 $('#seconds').on('keydown', function(e) {
   if (e.which === 13) {
-    go(e);
+    go();
   }
 });
 
-$('#start').click(function(e) {
-  if (clock.isRunning()) {
-    go(e);
+$('#start').click(function() {
+  if (!clock.isRunning() && clock.elapsedTime === 0) {
+    go();
   } else {
-    if ($('#start').html() === 'Resume') {
-      clock.start();
-      $('#start').html('Restart');
-      $('#stop').html('Stop');
-    } else {
-      go(e);
-    }
+    reset();
   }
 });
 
@@ -32,12 +26,16 @@ $('#stop').click(stop);
 function stop() {
   if (clock.isRunning()) {
     clock.stop();
-    $('#stop').html('Reset');
-    $('#start').html('Resume');
+    $('#stop').html('Resume');
   } else {
-    reset();
+    resume();
   }
 };
+
+function resume() {
+  clock.start();
+  $('#stop').html('Stop');
+}
 
 function reset() {
   clock.reset();
@@ -48,12 +46,10 @@ function reset() {
   makeKnob(0);
 }
 
-function go(e) {
+function go() {
   if ($('#seconds').val().trim() === '') {
     return;
   }
-
-  e.preventDefault();
 
   clock.stop();
   var seconds = +$('#seconds').val();
@@ -80,7 +76,7 @@ function start(time) {
 
   clock.start();
 
-  $('#start').html('Restart');
+  $('#start').html('Reset');
   $('#stop').removeClass('pure-button-disabled');
   $('#stop').prop('disabled', null);
 }
