@@ -93,5 +93,10 @@ Clock.prototype = {
 
   stop: function() {
     clearInterval(this.timeoutId);
+    this.timeoutId = null;
+  },
+
+  isRunning: function() {
+    return this.timeoutId != null;
   }
 };
