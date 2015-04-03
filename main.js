@@ -97,8 +97,8 @@ function makeKnob(time) {
     fgColor: '#77A78D',
     bgColor: '#EDEDED',
     fontColor: '#4D4E5E',
-    font: function(size) {
-      return '300 ' + size + 'px Muli';
+    font: function() {
+      return '300 34px Muli';
     }
   });
 
