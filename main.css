@@ -1,0 +1,14 @@
+html {
+  background: #f6f5f5;
+}
+
+body {
+  box-sizing: border-box;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+#box {
+  text-align: center;
+}

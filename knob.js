@@ -33,11 +33,7 @@ module.exports = function(options) {
   angleOffset = angleOffset * Math.PI / 180;
   angleArc = angleArc * Math.PI / 180;
 
-  var fontScale = Math.max(
-    String(Math.abs(max)).length,
-    String(Math.abs(min)).length,
-    2
-  ) + 2;
+  var fontScale = 5;
 
   var fgLineWidth = center * fgThickness;
   var bgLineWidth = center * bgThickness;
@@ -86,7 +82,7 @@ module.exports = function(options) {
     // TIL
     canvas.attr('width', width);
     canvas.attr('height', width);
-    canvas.css({position: 'absolute', width: realWidth, height: realWidth});
+    canvas.css({position: 'relative', width: realWidth, height: realWidth});
 
     return canvas;
   }

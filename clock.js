@@ -96,6 +96,11 @@ Clock.prototype = {
     this.timeoutId = null;
   },
 
+  reset: function() {
+    this.stop();
+    this.elapsedTime = 0;
+  },
+
   isRunning: function() {
     return this.timeoutId != null;
   }
