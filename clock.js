@@ -15,27 +15,17 @@
  * This is the class for the clock object, the single export
  * of the module. Usually, there should be one and only one
  * shared instance of this object at a time.
- * @param {number} tickInterval - tick interval in miliseconds (used by `tick`)
- * @param {number} realInterval - tick interval in miliseconds (used by `setInterval`)
- * @param {number} totalTicks - tick count to stop at
+ * @param {number} interval - interval in miliseconds (used by `setInterval`)
  * @property {number} timeoutId - timeoutId from the last `setInterval` call
- * @property {number} lastTick - timestamp of the last `tick` call
  * @property {number} elapsedTime - elapsed time in miliseconds since start
- * @property {number} elapsedTicks - number of elapsed ticks
- * @property {clockListener[]} tickListeners - array of listener callbacks
  * @property {clockListener[]} updateListeners - array of listener callbacks
  * @class
  */
-var Clock = module.exports = function(tickInterval, realInterval, totalTicks) {
-  this.tickInterval = tickInterval;
-  this.realInterval = realInterval;
-  this.totalTicks = totalTicks == null ? Infinity : totalTicks;
+var Clock = module.exports = function(interval) {
+  this.interval = interval;
   this.timeoutId = null;
   this.lastTick = null;
-  this.elapsedTime = null;
-  this.elapsedTicks = 0;
-  this.extra = 0;
-  this.tickListeners = [];
+  this.elapsedTime = 0;
   this.updateListeners = [];
 };
 
@@ -64,64 +54,10 @@ Clock.prototype = {
   tick: function() {
     var now = Date.now();
     var then = this.lastTick;
-    var total = this.totalTicks;
-    var count = this.elapsedTicks;
-    var interval = this.tickInterval;
-    var extra = this.extra;
 
-    var elapsed = extra + (now - then);
-    extra = elapsed % interval;
-    var ticks = Math.floor(elapsed / interval);
-
-    this.lastTick = now;
     this.elapsedTime += now - then;
-    this.extra = extra;
-    this.elapsedTicks += ticks;
-
-    if (ticks + count >= total) {
-      ticks = total - count;
-    }
-
-    for (var i = 0; i < ticks; i++) {
-      this.emitTick();
-    }
-
+    this.lastTick = now;
     this.emitUpdate();
-
-    if (ticks + count >= total) {
-      this.stop();
-    }
-  },
-
-  /**
-   * Calls each tick listener callback.
-   */
-  emitTick: function() {
-    var listeners = this.tickListeners;
-
-    for (var i = 0; i < listeners.length; i++) {
-      listeners[i](this);
-    }
-  },
-
-  /**
-   * Adds a listener to be called for each tick.
-   */
-  onTick: function(listener) {
-    this.tickListeners.push(listener);
-  },
-
-  /**
-   * Removes a previously-added tick listener.
-   */
-  offTick: function(listener) {
-    var listeners = this.tickListeners;
-
-    var index = listeners.indexOf(listener);
-
-    if (index !== -1) {
-      listeners.splice(index, 1);
-    }
   },
 
   /**

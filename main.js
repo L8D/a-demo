@@ -41,6 +41,7 @@ function start(time) {
 
     if (elapsed >= time) {
       knob.draw(0);
+      clock.stop();
     } else {
       knob.draw(elapsed - time);
     }
