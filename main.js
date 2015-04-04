@@ -30,7 +30,7 @@ function stop() {
   } else {
     resume();
   }
-};
+}
 
 function resume() {
   clock.start();
@@ -43,7 +43,7 @@ function reset() {
   $('#stop').html('Stop');
   $('#stop').addClass('pure-button-disabled');
   $('#stop').prop('disabled', true);
-  makeKnob(0);
+  makeKnob(1, 1);
 }
 
 function go() {
@@ -60,7 +60,7 @@ function start(time) {
   clock.stop();
   clock = new Clock(10);
 
-  var knob = makeKnob(time);
+  var knob = makeKnob(time, 0);
 
   clock.onUpdate(function() {
     var elapsed = clock.elapsedTime;
@@ -85,11 +85,11 @@ function format(elapsed) {
   return dateFormat(new Date(elapsed), 'MM:ss');
 }
 
-function makeKnob(time) {
+function makeKnob(time, value) {
   var knob = Knob({
     width: 200,
     min: 0,
-    value: 0,
+    value: value,
     label: format(0),
     max: time,
     fgThickness: 0.03,

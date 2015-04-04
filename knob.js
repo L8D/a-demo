@@ -72,7 +72,7 @@ module.exports = function(options) {
     ctx.beginPath();
     ctx.strokeStyle = fgColor;
     ctx.lineWidth = fgLineWidth;
-    ctx.arc(center, center, radius, startAngle, startAngle + angle, true);
+    ctx.arc(center, center, radius, startAngle, startAngle + angle, value !== max);
     ctx.stroke();
   }
 
